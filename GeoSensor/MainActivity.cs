@@ -1,6 +1,5 @@
-﻿
-/* 
- * BarcodeScanner (https://github.com/nicolabiancolini/Samples/tree/master/GeoSensor)
+﻿/* 
+ * GeoSensor (https://github.com/nicolabiancolini/Samples/tree/master/GeoSensor)
  * Copyright © 2017 Nicola Biancolini. All rights reserved.
  * Licensed under MIT (https://github.com/nicolabiancolini/Samples/blob/master/LICENSE)
  */
