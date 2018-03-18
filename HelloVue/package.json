@@ -1,0 +1,34 @@
+{
+    "name": "hellovue",
+    "description": "This app is a sample for use vue.js in modern web application.",
+    "authors": "Nicola Biancolini",
+    "version": "1.0.0",
+    "main": "",
+    "scripts": {
+        "build": "webpack",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": {
+        "name": "Nicola Biancolini",
+        "url": "https://github.com/nicolabiancolini"
+    },
+    "license": "Apache-2.0",
+    "dependencies": {
+        "vue": "^2.5.16",
+        "vue-class-component": "^6.2.0",
+        "vue-property-decorator": "^6.0.0",
+        "jquery": "^3.3.1"
+    },
+    "devDependencies": {
+        "@types/jquery": "^3.3.1",
+        "css-loader": "^0.28.11",
+        "ts-loader": "^4.1.0",
+        "vue-class-component": "^6.2.0",
+        "vue-loader": "^14.2.1",
+        "vue-template-compiler": "^2.5.16",
+        "webpack": "^4.1.1",
+        "webpack-cli": "^2.0.12",
+        "typescript": "^2.7.2"
+    }
+}
