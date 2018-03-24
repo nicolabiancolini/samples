@@ -15,4 +15,4 @@ This samples was created and is maintained by Nicola Biancolini.
 - https://twitter.com/nbiancolini
 
 ## Copyright and License
-Copyright © 2017 Nicola Biancolini. All rights reserved.
+Copyright © 2018 Nicola Biancolini. All rights reserved.
