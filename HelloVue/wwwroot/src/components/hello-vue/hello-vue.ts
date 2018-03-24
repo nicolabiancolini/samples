@@ -1,14 +1,14 @@
-import Vue from "vue";
-import Component from "vue-class-component";
+import Vue from 'vue';
+import Component from 'vue-class-component';
 
 @Component
 export default class HelloVue extends Vue {
-  message: string = "";
+  message: string = '';
 
   created() {
-    this.message = "World";
+    this.message = 'World';
   }
   mounted() {
-    this.message = "oops Vue :)";
+    this.message = 'oops Vue :)';
   }
 }
