@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "outDir": "./wwwroot/built/",
         "sourceMap": true,
         "target": "es5",
         "strict": true,
@@ -11,10 +10,6 @@
         "emitDecoratorMetadata": true,
         "suppressImplicitAnyIndexErrors": true
     },
-    "compileOnSave": true,
-    "include": [
-        "./wwwroot/src/**/*"
-    ],
     "exclude": [
         "node_modules",
         "bower_components"
