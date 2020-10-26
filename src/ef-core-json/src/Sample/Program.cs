@@ -28,7 +28,7 @@ namespace Sample
                 .EnableDetailedErrors()
                 .EnableSensitiveDataLogging();
 
-            using var context = new DbContext(optionsBuilder.Options);
+            using var context = new SqlServerDbContext(optionsBuilder.Options);
 
             var retailer = new Faker<Retailer>().CustomInstantiator(faker => new Retailer(faker.Person.FullName));
 
