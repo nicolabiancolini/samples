@@ -1,0 +1,25 @@
+﻿@page
+@inject IAuthenticationSchemeProvider SchemeProvider
+@model AspNetCore.LoremIpsum.Pages.SignInModel
+
+@using Microsoft.AspNetCore.Authentication
+
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Login with social providers</h3>
+        <h4>Select from the list of available social providers</h4>
+        <div class="btn-group" role="group">
+            @foreach (var provider in await SchemeProvider.GetRequestHandlerSchemesAsync())
+            {
+                <a class="btn btn-lg btn-default"
+                   asp-route-returnUrl="@PageContext.HttpContext.Request.Query["returnUrl"]"
+                   asp-route-provider="@provider.Name"
+                   asp-page-handler="SignIn"><i class="fab fa-@provider.Name.ToLower() fa-2x"></i></a>
+            }
+        </div>
+    </div>
+</div>

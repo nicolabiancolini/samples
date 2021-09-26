@@ -1,0 +1,28 @@
+﻿@page
+@model AspNetCore.LoremIpsum.Pages.Account.IndexModel
+
+@{
+    ViewData["Title"] = "Account";
+}
+
+<h1>Claims</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Issuer</th>
+            <th scope="col">Type</th>
+            <th scope="col">Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in User.Claims)
+        {
+            <tr>
+                <td>@claim.Issuer</td>
+                <td>@claim.Type</td>
+                <td>@claim.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
