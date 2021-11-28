@@ -4,4 +4,4 @@ This sample use [local account sign-up or sign-in user journey](https://github.c
 
 ## Prerequisites.
 
-Before proceeding, there are some mandatory steps to follow. Don't worry, you'll find them all here, and there aren't many 😎.
+Before proceeding, there are some [mandatory steps](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#prerequisites) to follow. Don't worry, you'll find them all here, and there aren't many 😎.
