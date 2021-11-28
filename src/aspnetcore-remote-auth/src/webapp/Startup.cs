@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace AspNetCore.LoremIpsum
 {
@@ -22,12 +23,7 @@ namespace AspNetCore.LoremIpsum
             services.AddRazorPages();
 
             services
-                .AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddEbay(options =>
                 {
                     IConfigurationSection ebayAuthNSection = this.Configuration.GetSection("Authentication:Ebay");
@@ -36,10 +32,33 @@ namespace AspNetCore.LoremIpsum
                     options.ClientSecret = ebayAuthNSection["ClientSecret"];
                     options.RuName = ebayAuthNSection["RuName"];
                 })
+                .AddGitHub(options =>
+                {
+                    IConfigurationSection githubAuthNSection = this.Configuration.GetSection("Authentication:GitHub");
+
+                    options.ClientId = githubAuthNSection["ClientId"];
+                    options.ClientSecret = githubAuthNSection["ClientSecret"];
+                })
+                .AddGoogle(options =>
+                {
+                    IConfigurationSection googleAuthNSection = this.Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                })
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/SignIn";
+                    options.LogoutPath = "/SignOut";
                 });
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,10 +75,10 @@ namespace AspNetCore.LoremIpsum
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
             app
+                .UseHttpsRedirection()
+                .UseCookiePolicy()
+                .UseStaticFiles()
                 .UseAuthentication()
                 .UseRouting()
                 .UseAuthorization()

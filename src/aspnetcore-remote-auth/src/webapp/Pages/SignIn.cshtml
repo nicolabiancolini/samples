@@ -1,4 +1,5 @@
-﻿@page
+﻿@page "/SignIn/{provider?}"
+
 @inject IAuthenticationSchemeProvider SchemeProvider
 @model AspNetCore.LoremIpsum.Pages.SignInModel
 
@@ -17,8 +18,7 @@
             {
                 <a class="btn btn-lg btn-default"
                    asp-route-returnUrl="@PageContext.HttpContext.Request.Query["returnUrl"]"
-                   asp-route-provider="@provider.Name"
-                   asp-page-handler="SignIn"><i class="fab fa-@provider.Name.ToLower() fa-2x"></i></a>
+                   asp-route-provider="@provider.Name"><i class="fab fa-@provider.Name.ToLower() fa-2x"></i></a>
             }
         </div>
     </div>
