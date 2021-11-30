@@ -1,0 +1,318 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1008.15138",
+      "templateHash": "11112948111356229890"
+    }
+  },
+  "parameters": {
+    "suffix": {
+      "type": "string",
+      "defaultValue": "[uniqueString(newGuid())]"
+    },
+    "azureBlobConnectionName": {
+      "type": "string",
+      "defaultValue": "[format('azureblob{0}', parameters('suffix'))]"
+    },
+    "azureEventGridConnectionName": {
+      "type": "string",
+      "defaultValue": "[format('eventgrid{0}', parameters('suffix'))]"
+    },
+    "appInsightsName": {
+      "type": "string",
+      "defaultValue": "[format('ai{0}', parameters('suffix'))]"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "[format('stgacc{0}', parameters('suffix'))]"
+    },
+    "readCustomerIdentityDetailsLogicAppName": {
+      "type": "string",
+      "defaultValue": "[format('read-customer-identity-details-la{0}', parameters('suffix'))]"
+    },
+    "appInsightsActionGroupName": {
+      "type": "string",
+      "defaultValue": "Application Insights Smart Detection"
+    },
+    "customerIdentityDetailsFillerLogicAppName": {
+      "type": "string",
+      "defaultValue": "[format('customer-identity-details-filler-la{0}', parameters('suffix'))]"
+    },
+    "appInsightsWorkspaceResourceId": {
+      "type": "string"
+    }
+  },
+  "functions": [],
+  "variables": {
+    "customerContainerName": "customers"
+  },
+  "resources": [
+    {
+      "type": "microsoft.insights/actionGroups",
+      "apiVersion": "2019-06-01",
+      "name": "[parameters('appInsightsActionGroupName')]",
+      "location": "Global",
+      "properties": {
+        "groupShortName": "SmartDetect",
+        "enabled": true,
+        "armRoleReceivers": [
+          {
+            "name": "Monitoring Contributor",
+            "roleId": "749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+            "useCommonAlertSchema": true
+          },
+          {
+            "name": "Monitoring Reader",
+            "roleId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05",
+            "useCommonAlertSchema": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[parameters('appInsightsName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web",
+        "RetentionInDays": 90,
+        "WorkspaceResourceId": "[parameters('appInsightsWorkspaceResourceId')]",
+        "IngestionMode": "LogAnalytics",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "[parameters('customerIdentityDetailsFillerLogicAppName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {},
+          "actions": {},
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "defaultToOAuthAuthentication": false,
+        "allowCrossTenantReplication": true,
+        "minimumTlsVersion": "TLS1_2",
+        "allowBlobPublicAccess": true,
+        "allowSharedKeyAccess": true,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default/{1}', parameters('storageAccountName'), variables('customerContainerName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/connections",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('azureEventGridConnectionName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "displayName": "[parameters('azureEventGridConnectionName')]",
+        "statuses": [
+          {
+            "status": "Connected"
+          }
+        ],
+        "customParameterValues": {},
+        "nonSecretParameterValues": {
+          "token:TenantId": "[tenant().tenantId]",
+          "token:grantType": "code"
+        },
+        "api": {
+          "name": "[parameters('azureEventGridConnectionName')]",
+          "displayName": "Azure Event Grid",
+          "description": "Azure Event Grid is an eventing backplane that enables event based programing with pub/sub semantics and reliable distribution & delivery for all services in Azure as well as third parties.",
+          "type": "Microsoft.Web/locations/managedApis"
+        },
+        "testLinks": []
+      }
+    },
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "[parameters('readCustomerIdentityDetailsLogicAppName')]",
+      "location": "[resourceGroup().location]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "manual": {
+              "type": "Request",
+              "kind": "Http",
+              "inputs": {
+                "method": "GET",
+                "relativePath": "customers/{Id}",
+                "schema": {}
+              }
+            }
+          },
+          "actions": {
+            "Get_blob_content_(V2)": {
+              "runAfter": {},
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['azureblob']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "[format('/v2/datasets/@{{encodeURIComponent(encodeURIComponent(''{0}''))}}/files/@{{encodeURIComponent(encodeURIComponent(''{1}/'',triggerOutputs()[''relativePathParameters''][''Id'']))}}/content', parameters('storageAccountName'), variables('customerContainerName'))]",
+                "queries": {
+                  "inferContentType": true
+                }
+              }
+            },
+            "Response": {
+              "runAfter": {
+                "Validate_blob_content": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "body": "@body('Validate_blob_content')",
+                "statusCode": 200
+              }
+            },
+            "Validate_blob_content": {
+              "runAfter": {
+                "Get_blob_content_(V2)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@base64ToString(body('Get_blob_content_(V2)')['$content'])",
+                "schema": {
+                  "properties": {
+                    "location": {
+                      "type": "string"
+                    },
+                    "work-teams": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "azureblob": {
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('azureBlobConnectionName'))]",
+                "connectionName": "azureblob",
+                "connectionProperties": {
+                  "authentication": {
+                    "type": "ManagedServiceIdentity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('azureBlobConnectionName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/connections",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('azureBlobConnectionName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "displayName": "[format('https://{0}.blob.{1}/{2}', parameters('storageAccountName'), environment().suffixes.storage, variables('customerContainerName'))]",
+        "statuses": [
+          {
+            "status": "Ready"
+          }
+        ],
+        "api": {
+          "name": "[parameters('azureBlobConnectionName')]",
+          "displayName": "Azure Blob Storage",
+          "description": "Microsoft Azure Storage provides a massively scalable, durable, and highly available storage for data on the cloud, and serves as the data storage solution for modern applications. Connect to Blob Storage to perform various operations such as create, update, get and delete on blobs in your Azure Storage account."
+        },
+        "testLinks": [
+          {
+            "requestUri": "[format('https://{0}:443/subscriptions/{1}/resourceGroups/{2}/providers/Microsoft.Web/connections/{3}/extensions/proxy/testconnection?api-version=2016-06-01', environment().authentication.audiences[1], subscription().id, resourceGroup().name, parameters('azureBlobConnectionName'))]",
+            "method": "get"
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
+    }
+  ]
+}
