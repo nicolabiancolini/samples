@@ -6,25 +6,25 @@
             "value": ""
         },
         "azureBlobConnectionName": {
-            "value": ""
+            "value": "azureblob"
         },
         "azureEventGridConnectionName": {
-            "value": ""
+            "value": "eventgrid"
         },
         "appInsightsName": {
-            "value": ""
+            "value": "ai"
         },
         "storageAccountName": {
-            "value": ""
+            "value": "stgacc"
         },
         "readCustomerIdentityDetailsLogicAppName": {
-            "value": ""
+            "value": "read-customer-identity-details-la"
         },
         "appInsightsActionGroupName": {
             "value": "Application Insights Smart Detection"
         },
         "customerIdentityDetailsFillerLogicAppName": {
-            "value": ""
+            "value": "customer-identity-details-filler-la"
         },
         "appInsightsWorkspaceResourceId": {
             "value": ""
