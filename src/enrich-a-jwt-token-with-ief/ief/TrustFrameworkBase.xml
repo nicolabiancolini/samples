@@ -312,6 +312,14 @@
         <UserHelpText>Work teams you belong to.</UserHelpText>
       </ClaimType>
 
+      <ClaimType Id="userRegisterEvent">
+        <DataType>string</DataType>
+      </ClaimType>
+
+      <ClaimType Id="systemDateTime">
+        <DataType>dateTime</DataType>
+      </ClaimType>
+
     </ClaimsSchema>
 
     <ClaimsTransformations>
@@ -333,6 +341,29 @@
           <InputParameter Id="valueToCompareTo" DataType="boolean" Value="true" />
         </InputParameters>
       </ClaimsTransformation>
+
+      <ClaimsTransformation Id="GetSystemDateTime" TransformationMethod="GetCurrentDateTime">
+        <OutputClaims>
+          <OutputClaim ClaimTypeReferenceId="systemDateTime" TransformationClaimType="currentDateTime" />
+        </OutputClaims>
+      </ClaimsTransformation>
+
+      <ClaimsTransformation Id="GenerateRegistrationEventRequest" TransformationMethod="GenerateJson">
+        <InputClaims>
+          <InputClaim ClaimTypeReferenceId="objectId" TransformationClaimType="0.data.objectId" />
+          <InputClaim ClaimTypeReferenceId="objectId" TransformationClaimType="0.id" />
+          <InputClaim ClaimTypeReferenceId="systemDateTime" TransformationClaimType="0.eventTime" />
+        </InputClaims>
+        <InputParameters>
+          <InputParameter Id="0.dataVersion" DataType="string" Value="1.0" />
+          <InputParameter Id="0.eventType" DataType="string" Value="Microsoft.ActiveDirectory" />
+          <InputParameter Id="0.subject" DataType="string" Value="{Settings:Tenant}" />
+        </InputParameters>
+        <OutputClaims>
+          <OutputClaim ClaimTypeReferenceId="userRegisterEvent" TransformationClaimType="outputClaim" />
+        </OutputClaims>
+      </ClaimsTransformation>
+
     </ClaimsTransformations>
 
     <ClientDefinitions>
@@ -427,6 +458,7 @@
         </Metadata>
       </ContentDefinition>
     </ContentDefinitions>
+
   </BuildingBlocks>
 
   <!--
@@ -476,6 +508,7 @@
 
     <ClaimsProvider>
       <DisplayName>Azure Active Directory</DisplayName>
+
       <TechnicalProfiles>
 
         <TechnicalProfile Id="AAD-Common">
@@ -521,6 +554,32 @@
             <OutputClaim ClaimTypeReferenceId="signInNames.emailAddress" />
           </OutputClaims>
           <IncludeTechnicalProfile ReferenceId="AAD-Common" />
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-AAD" />
+        </TechnicalProfile>
+
+        <TechnicalProfile Id="AAD-UserEmitRegistrationEvent">
+          <DisplayName>Emit user registration event to Event Grid.</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ServiceUrl">{Settings:CustomerRegisteredTopicUrl}</Item>
+            <Item Key="AuthenticationType">ApiKeyHeader</Item>
+            <Item Key="SendClaimsIn">Body</Item>
+            <Item Key="ClaimUsedForRequestPayload">userRegisterEvent</Item>
+            <Item Key="DefaultUserMessageIfRequestFailed">Cannot process your request right now, please try again later.</Item>
+          </Metadata>
+          <CryptographicKeys>
+            <Key Id="aeg-sas-key" StorageReferenceId="B2C_1A_CustomerRegisteredTopicSas" />
+          </CryptographicKeys>
+          <InputClaimsTransformations>
+            <InputClaimsTransformation ReferenceId="GetSystemDateTime" />
+            <InputClaimsTransformation ReferenceId="GenerateRegistrationEventRequest" />
+          </InputClaimsTransformations>
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="userRegisterEvent" />
+          </InputClaims>
+          <PersistedClaims>
+            <PersistedClaim ClaimTypeReferenceId="systemDateTime" />
+          </PersistedClaims>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-AAD" />
         </TechnicalProfile>
 
@@ -702,6 +761,7 @@
           </OutputClaims>
           <ValidationTechnicalProfiles>
             <ValidationTechnicalProfile ReferenceId="AAD-UserWriteUsingLogonEmail" />
+            <ValidationTechnicalProfile ReferenceId="AAD-UserEmitRegistrationEvent" />
           </ValidationTechnicalProfiles>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-AAD" />
         </TechnicalProfile>
@@ -932,4 +992,5 @@
     </UserJourney>
 
   </UserJourneys>
+
 </TrustFrameworkPolicy>
