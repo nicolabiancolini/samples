@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="Hello">Ciao mondo!</string>
-    <string name="ApplicationName">HelloWorldLocalizzato</string>
-  <string name="Switch">Cambia lingua</string>
-</resources>
