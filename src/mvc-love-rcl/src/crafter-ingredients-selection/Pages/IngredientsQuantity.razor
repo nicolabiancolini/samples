@@ -1,0 +1,16 @@
+﻿@page "/ingredients-selection/quantities"
+
+@inject NavigationManager navigationManager
+
+<PageTitle>Define the quantities</PageTitle>
+
+<h1>Step 2: define the quantities</h1>
+
+<button type="button" class="btn btn-primary" @onclick="OnQuantitiesSet">Next 👉</button>
+
+@code {
+    private void OnQuantitiesSet()
+    {
+        this.navigationManager.NavigateTo("/recipe-composition", forceLoad: true);
+    }
+}
