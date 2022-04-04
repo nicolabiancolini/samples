@@ -1,0 +1,11 @@
+﻿@using System.Collections.ObjectModel
+@{
+    Layout = "_Layout";
+
+    ViewData["Sections"] = new Collection<KeyValuePair<string, string>>()
+    {
+        KeyValuePair.Create(Url.Action("Index", "Home") !, "Home"),
+        KeyValuePair.Create(Url.Action("Index", "Home", new { area = "BackOffice/IngredientsSelection" }) !, "Ingredients Selection"),
+        KeyValuePair.Create(Url.Action("Index", "Home", new { area = "BackOffice/RecipeComposition" }) !, "Recipe Composition")
+    };
+}

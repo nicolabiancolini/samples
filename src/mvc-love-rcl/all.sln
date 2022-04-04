@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crafter.IngredientsSelectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crafter.RecipeComposition", "src\crafter-recipe-composition\Crafter.RecipeComposition.csproj", "{8438BFED-9722-4C50-A3E7-0096662672FE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crafter.BackOffice", "src\crafter-back-office\Crafter.BackOffice.csproj", "{1024D7F8-437D-471F-971E-ACAA5F43BB0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{8438BFED-9722-4C50-A3E7-0096662672FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8438BFED-9722-4C50-A3E7-0096662672FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8438BFED-9722-4C50-A3E7-0096662672FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1024D7F8-437D-471F-971E-ACAA5F43BB0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1024D7F8-437D-471F-971E-ACAA5F43BB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1024D7F8-437D-471F-971E-ACAA5F43BB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1024D7F8-437D-471F-971E-ACAA5F43BB0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{7315DE84-6EDC-4624-A75C-6765BED16642} = {9FE3AB9C-B5D8-4126-A6C8-260030278A3B}
 		{1312AE8D-187F-484A-B4B4-8096207D5505} = {9FE3AB9C-B5D8-4126-A6C8-260030278A3B}
 		{8438BFED-9722-4C50-A3E7-0096662672FE} = {9FE3AB9C-B5D8-4126-A6C8-260030278A3B}
+		{1024D7F8-437D-471F-971E-ACAA5F43BB0D} = {9FE3AB9C-B5D8-4126-A6C8-260030278A3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09F1200A-6CA3-4620-909A-1461ABC18604}

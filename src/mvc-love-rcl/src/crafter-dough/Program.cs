@@ -1,13 +1,18 @@
 // See the LICENSE.TXT file in the project root for full license information.
 
-using Crafter.RecipeComposition.Services;
+using Crafter.BackOffice;
+using Crafter.IngredientsSelection;
+using Crafter.RecipeComposition;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<RecipeService>();
+
+var backOfficeConfigurator = new BackOfficeBoundedContextConfigurator(builder.Environment, builder.Services);
+var ingredientsSelectionConfigurator = new IngredientsSelectionBoundedContextConfigurator(builder.Environment, builder.Services);
+var recipeCompositionConfigurator = new RecipeCompositionBoundedContextConfigurator(builder.Environment, builder.Services);
 
 var app = builder.Build();
 
@@ -27,15 +32,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapAreaControllerRoute(
-    name: "IngredientsSelection",
-    areaName: "IngredientsSelection",
-    pattern: "ingredients-selection/{controller=Home}/{action=Index}/{id?}");
-
-app.MapAreaControllerRoute(
-    name: "RecipeComposition",
-    areaName: "RecipeComposition",
-    pattern: "recipe-composition/{controller=Home}/{action=Index}/{id?}");
+backOfficeConfigurator.Configure(app);
+ingredientsSelectionConfigurator.Configure(app);
+recipeCompositionConfigurator.Configure(app);
 
 app.MapControllerRoute(
     name: "default",

@@ -1,0 +1,13 @@
+﻿@page "/back-office/recipe-composition"
+@using Microsoft.Extensions.Logging
+@using System.Threading.Tasks
+
+@inject ILogger<Index> logger
+@inject NavigationManager navigationManager
+
+@code {
+    protected override void OnInitialized()
+    {
+        this.logger.LogInformation("Initialized.");
+    }
+}

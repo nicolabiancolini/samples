@@ -21,12 +21,21 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="IngredientsSelection" asp-controller="Home" asp-action="Index">Kill your leftovers 🔪</a>
-                        </li>
+                        @{
+                            //var sections = !ViewData.ContainsKey("Sections") 
+                            //    ? (IDictionary<string, string>)ViewData["Sections"]! 
+                            //    : new Dictionary<string, string>()
+                            //    {
+                            //        { Url.Action("Index", "Home") !, "Home" },
+                            //        { Url.Action("Index", "Home", new { area = "IngredientsSelection" }) !, "Kill your leftovers 🔪" }
+                            //    };
+                            foreach (var link in (IEnumerable<KeyValuePair<string, string>>)ViewData["Sections"]!)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="@link.Key">@link.Value</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>

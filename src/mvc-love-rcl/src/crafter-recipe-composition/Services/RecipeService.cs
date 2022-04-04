@@ -1,6 +1,6 @@
 ﻿namespace Crafter.RecipeComposition.Services
 {
-    public sealed class RecipeService
+    internal sealed class RecipeService
     {
         public IEnumerable<string> IdentifyPossibilities()
         {
