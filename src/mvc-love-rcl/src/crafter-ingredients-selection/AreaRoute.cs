@@ -4,7 +4,7 @@ namespace Microsoft.AspNetCore.Mvc
 {
     internal sealed class AreaRoute
     {
-        public static readonly AreaRoute CustomerFacing = new ($"{BoundedContextAreaAttribute.Prefix}/CustomerFacing", "/recipe-composition");
+        public static readonly AreaRoute CustomerFacing = new ($"{BoundedContextAreaAttribute.Prefix}/CustomerFacing", "/ingredients-selection");
         public static readonly AreaRoute BackOffice = new ($"{BoundedContextAreaAttribute.Prefix}/BackOffice", $"/back-office{CustomerFacing.UrlPrefix}");
 
         public AreaRoute(string name, string urlPrefix)

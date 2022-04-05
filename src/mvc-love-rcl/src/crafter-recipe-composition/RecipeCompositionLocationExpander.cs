@@ -8,9 +8,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             ViewLocationExpanderContext context,
             IEnumerable<string> viewLocations)
         {
-            return !(context.AreaName ?? string.Empty).Equals(BoundedContextAreaAttribute.Prefix)
-                ? this.ExpandViewLocationsCore(viewLocations, value)
-                : return viewLocations;
+            return (context.AreaName ?? string.Empty).StartsWith(BoundedContextAreaAttribute.Prefix)
+                ? this.ExpandViewLocationsCore(viewLocations, context.AreaName!.Replace(BoundedContextAreaAttribute.Prefix, string.Empty))
+                : viewLocations;
         }
 
         public void PopulateValues(ViewLocationExpanderContext context)
@@ -18,11 +18,11 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             context.Values[BoundedContextAreaAttribute.Prefix] = context.ActionContext.RouteData.Values[BoundedContextAreaAttribute.Prefix]?.ToString();
         }
 
-        private IEnumerable<string> ExpandViewLocationsCore(IEnumerable<string> viewLocations, string value)
+        private IEnumerable<string> ExpandViewLocationsCore(IEnumerable<string> viewLocations, string boundedContextInnerArea)
         {
             foreach (var location in viewLocations)
             {
-                yield return location.Replace("{0}", value + "/{0}");
+                yield return location.Replace("{2}", boundedContextInnerArea);
                 yield return location;
             }
         }

@@ -18,11 +18,6 @@ namespace Crafter.RecipeComposition
             services.AddControllersWithViews()
                 .ConfigureApplicationPartManager(setup => setup.ApplicationParts.Add(new AssemblyPart(this.GetType().Assembly)));
 
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.ViewLocationExpanders
-            };
-
             services.AddScoped<RecipeService>();
         }
 

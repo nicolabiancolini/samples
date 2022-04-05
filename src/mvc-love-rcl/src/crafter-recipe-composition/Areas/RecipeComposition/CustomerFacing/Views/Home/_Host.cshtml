@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div>
+    <p>Expected Area: @AreaRoute.CustomerFacing.AreaName</p>
+    <p>Assembly: @this.GetType().Assembly.GetName()</p>
+    <p>Area: @Context.Request.RouteValues["area"]</p>
+</div>
+
+<component type="typeof(App)" render-mode="ServerPrerendered" />

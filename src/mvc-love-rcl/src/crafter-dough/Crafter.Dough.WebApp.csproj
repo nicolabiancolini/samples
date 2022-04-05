@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\crafter-back-office\Crafter.BackOffice.csproj" />
-    <ProjectReference Include="..\crafter-ingredients-selection\Crafter.IngredientsSelection.csproj" />
-    <ProjectReference Include="..\crafter-recipe-composition\Crafter.RecipeComposition.csproj" />
   </ItemGroup>
 
 </Project>

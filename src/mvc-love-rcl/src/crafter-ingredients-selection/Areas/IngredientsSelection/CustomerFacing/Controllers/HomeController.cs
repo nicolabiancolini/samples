@@ -3,9 +3,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Crafter.IngredientsSelection.Areas.IngredientsSelection.Controllers;
+namespace Crafter.IngredientsSelection.Areas.IngredientsSelection.CustomerFacing.Controllers;
 
-[Area("IngredientsSelection")]
+[BoundedContextArea("CustomerFacing")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> logger;

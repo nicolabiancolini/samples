@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,14 +21,14 @@ namespace Crafter.IngredientsSelection
         public void Configure(WebApplication app)
         {
             app.MapAreaControllerRoute(
-                name: "IngredientsSelection",
-                areaName: "IngredientsSelection",
-                pattern: $"{RoutePrefix.CustomerFacing.Value.Trim('/')}/{{controller=Home}}/{{action=Index}}/{{id?}}");
+                name: AreaRoute.CustomerFacing.Name,
+                areaName: AreaRoute.CustomerFacing.AreaName,
+                pattern: $"{AreaRoute.CustomerFacing.UrlPrefix.Trim('/')}/{{controller=Home}}/{{action=Index}}/{{id?}}");
 
             app.MapAreaControllerRoute(
-                name: "BackOffice/IngredientsSelection",
-                areaName: "BackOffice/IngredientsSelection",
-                pattern: $"{RoutePrefix.BackOffice.Value.Trim('/')}/{{controller=Home}}/{{action=Index}}/{{id?}}");
+                name: AreaRoute.BackOffice.Name,
+                areaName: AreaRoute.BackOffice.AreaName,
+                pattern: $"{AreaRoute.BackOffice.UrlPrefix.Trim('/')}/{{controller=Home}}/{{action=Index}}/{{id?}}");
         }
     }
 }

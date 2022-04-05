@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Logging
+
+@inject ILogger<App> logger
+
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new [] { typeof(Crafter.IngredientsSelection.App).Assembly, typeof(Crafter.RecipeComposition.App).Assembly }">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView>
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        this.logger.LogInformation("Rendered.");
+        return base.OnAfterRenderAsync(firstRender);
+    }
+}

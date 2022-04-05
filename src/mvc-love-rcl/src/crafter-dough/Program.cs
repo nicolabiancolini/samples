@@ -9,10 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddRazorPages();
 
 var backOfficeConfigurator = new BackOfficeBoundedContextConfigurator(builder.Environment, builder.Services);
-var ingredientsSelectionConfigurator = new IngredientsSelectionBoundedContextConfigurator(builder.Environment, builder.Services);
-var recipeCompositionConfigurator = new RecipeCompositionBoundedContextConfigurator(builder.Environment, builder.Services);
+//var ingredientsSelectionConfigurator = new IngredientsSelectionBoundedContextConfigurator(builder.Environment, builder.Services);
+//var recipeCompositionConfigurator = new RecipeCompositionBoundedContextConfigurator(builder.Environment, builder.Services);
 
 var app = builder.Build();
 
@@ -33,12 +34,14 @@ app.UseRouting();
 app.UseAuthorization();
 
 backOfficeConfigurator.Configure(app);
-ingredientsSelectionConfigurator.Configure(app);
-recipeCompositionConfigurator.Configure(app);
+//ingredientsSelectionConfigurator.Configure(app);
+//recipeCompositionConfigurator.Configure(app);
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.MapBlazorHub();
 

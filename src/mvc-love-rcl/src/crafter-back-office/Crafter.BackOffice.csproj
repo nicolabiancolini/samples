@@ -19,4 +19,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(MicrosoftAspNetCoreComponentsWebVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\crafter-ingredients-selection\Crafter.IngredientsSelection.csproj" />
+    <ProjectReference Include="..\crafter-recipe-composition\Crafter.RecipeComposition.csproj" />
+  </ItemGroup>
+
 </Project>
