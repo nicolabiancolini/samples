@@ -4,7 +4,7 @@
 
 @inject ILogger<App> logger
 
-<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new [] { typeof(Crafter.IngredientsSelection.App).Assembly, typeof(Crafter.RecipeComposition.App).Assembly }">
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new [] { typeof(Crafter.IngredientsSelection.Pages.BackOffice.Index).Assembly, typeof(Crafter.RecipeComposition.Pages.BackOffice.Index).Assembly }">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" />
     </Found>

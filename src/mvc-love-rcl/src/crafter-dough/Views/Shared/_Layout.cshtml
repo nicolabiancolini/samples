@@ -22,13 +22,6 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @{
-                            //var sections = !ViewData.ContainsKey("Sections") 
-                            //    ? (IDictionary<string, string>)ViewData["Sections"]! 
-                            //    : new Dictionary<string, string>()
-                            //    {
-                            //        { Url.Action("Index", "Home") !, "Home" },
-                            //        { Url.Action("Index", "Home", new { area = "IngredientsSelection" }) !, "Kill your leftovers 🔪" }
-                            //    };
                             foreach (var link in (IEnumerable<KeyValuePair<string, string>>)ViewData["Sections"]!)
                             {
                                 <li class="nav-item">

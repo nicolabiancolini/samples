@@ -5,9 +5,9 @@
     {  
         ViewData["Sections"] = new Collection<KeyValuePair<string, string>>()
         {
-            KeyValuePair.Create(Url.Action("Index", "Home") !, "Home"),
-            KeyValuePair.Create(Url.Action("Index", "Home", new { area = "IngredientsSelection" }) !, "Kill your leftovers 🔪"),
-            KeyValuePair.Create(Url.Action("Index", "Home", new { area = "BackOffice" }) !, "Back office 💀")
+            KeyValuePair.Create("/", "Home"),
+            KeyValuePair.Create("/ingredients-selection", "Kill your leftovers 🔪"),
+            KeyValuePair.Create("/back-office", "Back office 💀")
         };
     }
 }

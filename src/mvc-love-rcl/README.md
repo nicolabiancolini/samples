@@ -1,5 +1,13 @@
 # Spike to try RCL with MVC
 
+## Assembly reference
+
+![](./etc/schemas-linker.drawio.png)
+
+## Routing schema
+
+![](./etc/schemas-routing.drawio.png)
+
 ### Reference
 
 [Component Tag Helper in ASP.NET Core](https://docs.microsoft.com/aspnet/core/mvc/views/tag-helpers/built-in/component-tag-helper)

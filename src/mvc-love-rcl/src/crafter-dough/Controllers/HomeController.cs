@@ -23,11 +23,6 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult ConsumeComponent1()
-    {
-        return View();
-    }
-
     public IActionResult Blazor()
     {
         return View("_Host");

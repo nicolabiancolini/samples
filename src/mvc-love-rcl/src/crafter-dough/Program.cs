@@ -1,8 +1,6 @@
 // See the LICENSE.TXT file in the project root for full license information.
 
 using Crafter.BackOffice;
-using Crafter.IngredientsSelection;
-using Crafter.RecipeComposition;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +10,6 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddRazorPages();
 
 var backOfficeConfigurator = new BackOfficeBoundedContextConfigurator(builder.Environment, builder.Services);
-//var ingredientsSelectionConfigurator = new IngredientsSelectionBoundedContextConfigurator(builder.Environment, builder.Services);
-//var recipeCompositionConfigurator = new RecipeCompositionBoundedContextConfigurator(builder.Environment, builder.Services);
 
 var app = builder.Build();
 
@@ -34,8 +30,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 backOfficeConfigurator.Configure(app);
-//ingredientsSelectionConfigurator.Configure(app);
-//recipeCompositionConfigurator.Configure(app);
 
 app.MapControllerRoute(
     name: "default",
