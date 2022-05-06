@@ -1,0 +1,15 @@
+﻿@using Microsoft.Extensions.Logging
+
+@inject ILogger<Ingredients> logger
+
+<div class="my-component">
+    I am in the <strong>Ingredients Selection</strong> module
+</div>
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        this.logger.LogInformation("Rendered.");
+        base.OnAfterRender(firstRender);
+    }
+}

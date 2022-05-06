@@ -1,0 +1,21 @@
+﻿@page "/ingredients-selection"
+@using Microsoft.Extensions.Logging
+@using System.Threading.Tasks
+
+@inject ILogger<Index> logger
+@inject NavigationManager navigationManager
+
+<PageTitle>Select your ingredients</PageTitle>
+
+<h1>Step 1: select your ingredients</h1>
+
+<Ingredients />
+
+<button type="button" class="btn btn-primary" @onclick="OnSelectionCompleted">Next 👉</button>
+
+@code {
+    private void OnSelectionCompleted()
+    {
+        this.navigationManager.NavigateTo("/ingredients-selection/quantities");
+    }
+}

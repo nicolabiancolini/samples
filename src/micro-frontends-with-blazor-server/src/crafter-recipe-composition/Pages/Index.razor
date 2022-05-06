@@ -1,0 +1,52 @@
+﻿@page "/recipe-composition"
+@using Microsoft.Extensions.Logging
+
+@inject ILogger<Index> logger
+@inject NavigationManager navigationManager
+@inject RecipeService recipeService
+
+<PageTitle>Compose your recipe 🧑‍🍳</PageTitle>
+
+<h1>Step 3: compose your recipe 🧑‍🍳</h1>
+
+<div class="my-component">
+    I am in the <strong>Recipe Composition</strong> module
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Recipes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var recipe in this.recipes)
+        {
+            <tr>
+                <th>@recipe</th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-primary" @onclick="OnRecipeCompleted">End 🍝</button>
+
+@code {
+    private IEnumerable<string> recipes = Enumerable.Empty<string>();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.recipes = this.recipeService.IdentifyPossibilities();
+            this.StateHasChanged();
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
+    private void OnRecipeCompleted()
+    {
+        this.navigationManager.NavigateTo("/", forceLoad: true);
+    }
+}
