@@ -1,6 +1,8 @@
-﻿namespace Crafter.RecipeComposition.Services
+﻿// See the LICENSE.TXT file in the project root for full license information.
+
+namespace Crafter.RecipeComposition.Services
 {
-    public sealed class RecipeService
+    internal sealed class RecipeService
     {
         public IEnumerable<string> IdentifyPossibilities()
         {

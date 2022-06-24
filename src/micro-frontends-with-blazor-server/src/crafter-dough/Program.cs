@@ -1,14 +1,31 @@
 // See the LICENSE.TXT file in the project root for full license information.
 
-using Crafter.RecipeComposition.Services;
+using Crafter;
+using Crafter.BackOffice;
+using Crafter.IngredientsSelection;
+using Crafter.RecipeComposition;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// var scanner = new AssemblyScanner(AppDomain.CurrentDomain.GetAssemblies().Where(a => a.GetName().Name!.StartsWith("Crafter")), a => a.GetName().Name!.StartsWith("Crafter"));
+// var modules = scanner.Provide<IModuleStartup>();
+
+var modules = new IModuleStartup[]
+{
+    new BackOfficeStartup(),
+    new IngredientsSelectionStartup(),
+    new RecipeCompositionStartup()
+};
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddServerSideBlazor();
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<RecipeService>();
+builder.Services.AddServerSideBlazor();
+
+foreach (var module in modules)
+{
+    module.ConfigureServices(builder.Services);
+}
 
 var app = builder.Build();
 
@@ -22,40 +39,28 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.MapBlazorHub();
 
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+foreach (var module in modules)
+{
+    module.Configure(app);
+}
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapFallbackToAreaPage(
-    area: "BackOffice",
-    page: "/_IngredientsSelection",
-    pattern: "/back-office/ingredients-selection");
-
-app.MapFallbackToAreaPage(
-    area: "BackOffice",
-    page: "/_RecipeComposition",
-    pattern: "/back-office/recipe-composition");
-
 app.MapFallbackToPage(
-    page: "/_IngredientSelection",
-    pattern: "/ingredient-selection");
+    page: "/IngredientsSelection/_Host",
+    pattern: $"~/IngredientsSelection/{FallbackEndpointRouteBuilderExtensions.DefaultPattern}");
 
 app.MapFallbackToPage(
     page: "/_RecipeComposition",
-    pattern: "/recipe-composition");
-
-app.MapRazorPages();
-
-app.MapBlazorHub();
+    pattern: $"~/recipe-composition/{FallbackEndpointRouteBuilderExtensions.DefaultPattern}");
 
 app.Run();

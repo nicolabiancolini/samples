@@ -4,4 +4,13 @@
     Layout = "_Layout";
 }
 
+@section Head {
+    <base href="~/back-office/recipe-composition/" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+}
+
+@section Scripts {
+    <script src="~/_framework/blazor.server.js"></script>
+}
+
 <component type="typeof(Crafter.RecipeComposition.App)" render-mode="ServerPrerendered" />

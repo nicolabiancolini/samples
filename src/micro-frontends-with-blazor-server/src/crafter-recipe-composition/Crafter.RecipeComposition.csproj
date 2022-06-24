@@ -18,4 +18,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(MicrosoftAspNetCoreComponentsWebVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\core\Crafter.csproj" />
+  </ItemGroup>
+
 </Project>

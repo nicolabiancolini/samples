@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Crafter.Dough.WebApp.styles.css" asp-append-version="true" />
-    <base href="~/" />
-    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    @await RenderSectionAsync("Head", false)
 </head>
 <body>
     <header>
@@ -22,7 +21,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/">Home</a>
+                            <a class="nav-link text-dark" asp-page="Index" asp-area="BackOffice">Home</a>
                         </li> 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="_IngredientsSelection" asp-area="BackOffice">Ingredients Selection</a>
@@ -49,7 +48,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="_framework/blazor.server.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,7 +1,16 @@
-﻿@page "/ingredients-selection"
+﻿@*@page "/ingredients-selection"*@
 
 @{
     Layout = "_Layout";
+}
+
+@section Head {
+    <base href="~/ingredients-selection/" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+}
+
+@section Scripts {
+    <script src="~/_framework/blazor.server.js"></script>
 }
 
 <component type="typeof(Crafter.IngredientsSelection.App)" render-mode="ServerPrerendered" />
