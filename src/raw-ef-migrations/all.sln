@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ops", "ops", "{5538400D-C9AF-496E-AAB3-83CE5CC9AFA4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql-server", "sql-server", "{1660EFB5-FE1A-49DE-AA6C-C0B308C89F79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.SqlServer.Design", "ops\sql-server\design\Sample.SqlServer.Design.csproj", "{B971E875-B2EF-4EA6-A778-345C30F37171}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B971E875-B2EF-4EA6-A778-345C30F37171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B971E875-B2EF-4EA6-A778-345C30F37171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B971E875-B2EF-4EA6-A778-345C30F37171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B971E875-B2EF-4EA6-A778-345C30F37171}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1660EFB5-FE1A-49DE-AA6C-C0B308C89F79} = {5538400D-C9AF-496E-AAB3-83CE5CC9AFA4}
+		{B971E875-B2EF-4EA6-A778-345C30F37171} = {1660EFB5-FE1A-49DE-AA6C-C0B308C89F79}
+	EndGlobalSection
+EndGlobal
