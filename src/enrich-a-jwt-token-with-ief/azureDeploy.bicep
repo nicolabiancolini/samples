@@ -1,4 +1,5 @@
 param suffix string = uniqueString(newGuid())
+param location string = resourceGroup().location
 
 param azureBlobConnectionName string = 'azureblob${suffix}'
 param azureEventGridConnectionName string = 'eventgrid${suffix}'
@@ -34,7 +35,7 @@ resource appInsightsActionGroup 'microsoft.insights/actionGroups@2019-06-01' = {
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
-  location: resourceGroup().location
+  location: location
   kind: 'web'
   properties: {
     Application_Type: 'web'
@@ -48,7 +49,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 
 resource customerIdentityDetailsFillerLogicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: customerIdentityDetailsFillerLogicAppName
-  location: resourceGroup().location
+  location: location
   properties: {
     state: 'Enabled'
     definition: {
@@ -65,7 +66,7 @@ resource customerIdentityDetailsFillerLogicApp 'Microsoft.Logic/workflows@2019-0
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   name: storageAccountName
-  location: resourceGroup().location
+  location: location
   sku: {
     name: 'Standard_LRS'
   }
@@ -106,7 +107,7 @@ resource customerContainer 'Microsoft.Storage/storageAccounts/blobServices/conta
 
 resource azureEventGridConnection 'Microsoft.Web/connections@2016-06-01' = {
   name: azureEventGridConnectionName
-  location: resourceGroup().location
+  location: location
   properties: {
     displayName: azureEventGridConnectionName
     statuses: [
@@ -131,7 +132,7 @@ resource azureEventGridConnection 'Microsoft.Web/connections@2016-06-01' = {
 
 resource readCustomerIdentityDetailsLogicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: readCustomerIdentityDetailsLogicAppName
-  location: resourceGroup().location
+  location: location
   identity: {
     type: 'SystemAssigned'
   }
@@ -235,7 +236,7 @@ resource readCustomerIdentityDetailsLogicApp 'Microsoft.Logic/workflows@2019-05-
 
 resource azureBlobConnection 'Microsoft.Web/connections@2016-06-01' = {
   name: azureBlobConnectionName
-  location: resourceGroup().location
+  location: location
   properties: {
     displayName: 'https://${storageAccountName}.blob.${environment().suffixes.storage}/${customerContainerName}'
     statuses: [
