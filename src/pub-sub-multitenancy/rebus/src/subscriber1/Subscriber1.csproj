@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Rebus.AzureServiceBus" Version="9.*" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\messages\Messages.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\common\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>Tenant</_Parameter1>
+      <_Parameter2>sub1</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>TenantQueueName</_Parameter1>
+      <_Parameter2>subscriber1-queue</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+  
+</Project>
