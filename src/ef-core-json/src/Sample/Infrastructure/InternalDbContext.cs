@@ -1,10 +1,8 @@
 // See the LICENSE.TXT file in the project root for full license information.
 
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Sample.Dtos;
 using Sample.Entities;
 using Sample.Infrastructure;
@@ -12,11 +10,9 @@ using Sample.Infrastructure.Storage;
 
 namespace Sample
 {
-    public class DbContext : Microsoft.EntityFrameworkCore.DbContext, IContext
+    public class InternalDbContext : DbContext, IContext
     {
-        private readonly ILoggerFactory loggerFactory;
-
-        public DbContext(DbContextOptions options)
+        public InternalDbContext(DbContextOptions options)
             : base(options)
         {
             this.Cars = new CarRepository(this.Set<Car>());
@@ -36,21 +32,13 @@ namespace Sample
                 throw new System.ArgumentNullException(nameof(modelBuilder));
             }
 
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Car>()
                 .HasKey(car => car.Id);
 
             modelBuilder.Entity<Car>()
                 .Property(car => car.Name);
-
-            modelBuilder.Entity<Car>()
-                .Property(car => car.Metadata)
-                .HasConversion(new JsonValueConverter<Metadata>());
-
-            modelBuilder.Entity<Car>()
-                .Property(car => car.NameOfRetailer)
-                .HasComputedColumnSql("JSON_VALUE(Metadata, '$.Retailer.Name')");
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

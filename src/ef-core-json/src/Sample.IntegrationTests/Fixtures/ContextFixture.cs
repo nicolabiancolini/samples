@@ -21,12 +21,16 @@ namespace Sample.IntegrationTests.Fixtures
             GC.SuppressFinalize(this);
         }
 
+        public abstract IContext CreateContext();
+
         protected virtual void AddDisposableObject(IDisposable disposable)
         {
             this.disposables.Enqueue(disposable);
         }
 
-        protected abstract void Dispose(IDisposable disposable);
+        protected abstract void BeforeDispose(IDisposable disposable);
+
+        protected abstract void AfterDispose(IDisposable disposable);
 
         protected virtual void Dispose(bool disposing)
         {
@@ -38,7 +42,7 @@ namespace Sample.IntegrationTests.Fixtures
                     {
                         if (this.disposables.TryDequeue(out IDisposable disposable))
                         {
-                            this.Dispose(disposable);
+                            this.BeforeDispose(disposable);
                             disposable.Dispose();
                         }
                     }

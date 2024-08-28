@@ -11,12 +11,12 @@ using Xunit;
 
 namespace Sample.IntegrationTests
 {
-    [Collection(SqlServerFixtureCollection.Name)]
-    public class SqlServerTests : TestBase
+    [Collection(PostgreSqlFixtureCollection.Name)]
+    public class PostgreSqlTests : TestBase
     {
-        private readonly SqlServerContextFixture fixture;
+        private readonly PostgreSqlContextFixture fixture;
 
-        public SqlServerTests(SqlServerContextFixture fixture)
+        public PostgreSqlTests(PostgreSqlContextFixture fixture)
         {
             this.fixture = fixture;
         }
@@ -36,7 +36,7 @@ namespace Sample.IntegrationTests
             await context.CommitAsync(CancellationToken.None).ConfigureAwait(false);
 
             // Act
-            var car = await context.Cars.MaterializeAsync(car => car.NameOfRetailer == "Car Auto Orvieto").ConfigureAwait(false);
+            var car = await context.Cars.MaterializeAsync(car => car.Metadata.Retailer.Name == "Car Auto Orvieto").ConfigureAwait(false);
 
             // Assert
             Assert.NotNull(car);

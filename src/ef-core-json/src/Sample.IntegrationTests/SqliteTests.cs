@@ -11,12 +11,12 @@ using Xunit;
 
 namespace Sample.IntegrationTests
 {
-    [Collection(SqlServerFixtureCollection.Name)]
-    public class SqlServerTests : TestBase
+    [Collection(SqliteFixtureCollection.Name)]
+    public class SqliteTests : TestBase
     {
-        private readonly SqlServerContextFixture fixture;
+        private readonly SqliteContextFixture fixture;
 
-        public SqlServerTests(SqlServerContextFixture fixture)
+        public SqliteTests(SqliteContextFixture fixture)
         {
             this.fixture = fixture;
         }

@@ -9,19 +9,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Sample.IntegrationTests.Fixtures
 {
-    public class SqlServerContextFixture : ContextFixture
+    public class PostgreSqlContextFixture : ContextFixture
     {
-        private readonly ICollection<SqlServerDbContext> contexts;
+        private readonly ICollection<PostgreSqlDbContext> contexts;
 
         private readonly string userId;
-        private readonly string server;
+        private readonly string host;
         private readonly string password;
 
-        public SqlServerContextFixture()
+        public PostgreSqlContextFixture()
         {
-            this.contexts = new HashSet<SqlServerDbContext>();
+            this.contexts = new HashSet<PostgreSqlDbContext>();
 
-            var vault = Path.Combine(Environment.CurrentDirectory, ".env.sqlserver");
+            var vault = Path.Combine(Environment.CurrentDirectory, ".env.postgresql");
             if (File.Exists(vault))
             {
                 var secrets = File.ReadAllLines(vault)
@@ -29,20 +29,20 @@ namespace Sample.IntegrationTests.Fixtures
                     .ToDictionary(pair => pair[0], pair => pair[1]);
 
                 this.userId = secrets["user id"];
-                this.server = secrets["server"];
+                this.host = secrets["host"];
                 this.password = secrets["password"];
             }
         }
 
         public override IContext CreateContext()
         {
-            return this.CreateContext(this.server, this.userId, this.password);
+            return this.CreateContext(this.host, this.userId, this.password);
         }
 
-        public IContext CreateContext(string server, string user, string password)
+        public IContext CreateContext(string host, string user, string password)
         {
             StringBuilder connectionsStringBuilder = new StringBuilder();
-            connectionsStringBuilder.Append($"server={server};database={Guid.NewGuid()};user id={user}");
+            connectionsStringBuilder.Append($"host={host};database={Guid.NewGuid()};username={user}");
 
             if (!string.IsNullOrEmpty(password))
             {
@@ -50,9 +50,9 @@ namespace Sample.IntegrationTests.Fixtures
             }
 
             var optionsBuilder = new DbContextOptionsBuilder()
-                .UseSqlServer(connectionsStringBuilder.ToString());
+                .UseNpgsql(connectionsStringBuilder.ToString());
 
-            var context = new SqlServerDbContext(optionsBuilder.Options);
+            var context = new PostgreSqlDbContext(optionsBuilder.Options);
             context.Database.EnsureCreated();
 
             this.AddDisposableObject(context);
