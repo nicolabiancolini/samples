@@ -1,0 +1,8 @@
+{
+  "solution": {
+    "path": "..\\all.sln",
+    "projects": [
+      "ops\\security-tools\\Azure.Security.TrustFrameworkKeySet.csproj"
+    ]
+  }
+}
