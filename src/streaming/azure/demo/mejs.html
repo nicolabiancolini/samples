@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaElement.js | http://www.mediaelementjs.com/</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/5.1.0/mediaelementplayer.min.css"
+        integrity="sha512-uPQKP62rFWcB9WqloOcrcgA5g6DTEGm8MzM2trLIPo56C4S4IlZ9PePhDo+Bcg7xT/ntwWrn0sDSPiuVkSG7DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <video id="player" class="azuremediaplayer amp-default-skin" autoplay controls width="640" height="400"
+        poster="https://picsum.photos/640/400">
+    </video>
+    <div id="update-player">
+        <p>URL:</p>
+        <input name="uri" type="text" />
+        <button type="button">Submit</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/5.1.0/mediaelement-and-player.min.js"
+        integrity="sha512-NSfhHJCrhidbMog2j0rg52IXpiddvISzOHU9/wqc+7qu2j8ciMuSf0v2pqfhKTuWTyZH9m61CSDRsIofeMhsHA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/5.1.0/lang/it.min.js"
+        integrity="sha512-FZM3GMSr66Udt+1ZaCV0kTrpihcUGS0cwb5S7ySGaKuQVg1r/9Z2dtUS+nqVfLReKERKWSEm+MX+PSsLhR/gDw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const player = new MediaElement('player');
+    </script>
+    <script>
+        document.querySelector('#update-player > button').addEventListener('click', () => {
+            player.setSrc(document.querySelector('#update-player > input[name="uri"]').value);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+﻿@page "{search?}"
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="row">
+    <form asp-page-handler="search" method="post" class="col-10 row">
+        <div class="col-10">
+            <input type="text" class="form-control" name="search" placeholder="Search" aria-label="Search" value="@this.RouteData.Values["search"]">
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
+        </div>
+    </form>
+    <div class="col">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#upload" aria-expanded="false" aria-controls="upload"><i class="bi bi-cloud-upload"></i> Upload</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col mt-2">
+        <div class="collapse multi-collapse" id="upload">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="quick-tab" data-bs-toggle="tab" data-bs-target="#nav-quick" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                        <i class="bi bi-upload"></i>
+                        Quick Upload
+                    </button>
+                    <button class="nav-link" id="copy-tab" data-bs-toggle="tab" data-bs-target="#nav-copy" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                        <i class="bi bi-link-45deg"></i>
+                        Use Link
+                    </button>
+                </div>
+            </nav>
+            <div class="tab-content border border-top-0 p-2" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-quick" role="tabpanel" aria-labelledby="quick-tab">
+                    <form id="file" asp-page-handler="file" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="file-file" class="form-label">Video File</label>
+                            <input type="file" class="form-control" id="file-file" name="file" aria-describedby="file-help">
+                            <div id="file-help" class="form-text">File must not exceed 200 Mb</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="file-name" class="form-label">Video Name</label>
+                            <input type="text" class="form-control" id="file-name" name="name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="nav-copy" role="tabpanel" aria-labelledby="copy-tab">
+                    <form id="copy" asp-page-handler="copy" method="post">
+                        <div class="mb-3">
+                            <label for="copy-url" class="form-label">Video URL</label>
+                            <input type="url" class="form-control" id="copy-url" name="url" aria-describedby="url-help">
+                            <div id="url-help" class="form-text">Example: https://example.com/media/my_video.mp4</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="copy-name" class="form-label">Video Name</label>
+                            <input type="text" class="form-control" id="copy-name" name="name">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="copy-require-signed-urls" name="require-signed-urls" value="true">
+                            <label class="form-check-label" for="copy-require-signed-urls">Require Signed URLs</label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="file-allowed-origins">Allowed Origins</label>
+                            <textarea type="text" class="form-control" id="copy-allowed-origins" name="allowed-origins" aria-describedby="copy-allowed-origins-help"></textarea>
+                            <div id="allowed-origins-help" class="form-text">Example: https://example.com;https://www.example.com</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Streaming URLs</th>
+                <th scope="col">Require Signed URLs</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < this.Model.Videos.Length; i++)
+            {
+                var durationMinutes = (int)this.Model.Videos[i].Duration / 60;
+                <tr>
+                    <td scope="row">
+                        <div class="card border-0" style="max-width: 18rem">
+                            @if (!this.Model.Videos[i].RequireSignedUrLs)
+                            {
+                                <img src="@this.Model.Videos[i].Thumbnail" class="card-img-top rounded" alt="Video preview">
+                            }
+                            else
+                            {
+                                <svg class="bd-placeholder-img card-img-top rounded" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Preview locked" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Locked</text>
+                                </svg>
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@this.Model.Videos[i].Meta.Name</h5>
+                                <p class="card-text">@(durationMinutes)m @((int)this.Model.Videos[i].Duration - (durationMinutes * 60))s</p>
+                                <a href="/Player/@this.Model.Videos[i].Uid" class="btn btn-primary">Watch</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <label asp-for="@this.Model.Videos[i].Playback.Hls" class="form-label">HLS Manifest URL</label>
+                        <input asp-for="@this.Model.Videos[i].Playback.Hls" class="form-control" aria-describedby="playbackHls" readonly>
+                        <div id="playbackHls" class="form-text">Mandatory to stream contente to Apple devices.</div>
+                        <label asp-for="@this.Model.Videos[i].Playback.Dash" class="form-label">Dash Manifest URL</label>
+                        <input asp-for="@this.Model.Videos[i].Playback.Dash" class="form-control" readonly>
+                    </td>
+                    <td><input asp-for="@this.Model.Videos[i].RequireSignedUrLs" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,37 @@
+﻿@page "{uid}"
+
+@model Streaming.Cloudflare.WebApp.Pages.PlayerModel
+@{
+    ViewData["Title"] = this.Model.Video.Meta.Name;
+}
+
+<div class="row">
+    <iframe src="@Uri.UriSchemeHttps://@this.Model.Video.Thumbnail.DnsSafeHost/@this.Model.Video.Uid/iframe"
+            style="border: none"
+            height="720"
+            width="1280"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+            allowfullscreen="true">
+    </iframe>
+</div>
+
+<div class="row">
+    <h2>Update medatada</h2>
+
+    <form asp-page-handler="update" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Video Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="@this.Model.Video.Meta.Name">
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="require-signed-urls" name="require-signed-urls" value="true" checked="@this.Model.Video.RequireSignedUrLs">
+            <label class="form-check-label" for="require-signed-urls">Require Signed URLs</label>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="allowed-origins">Allowed Origins</label>
+            <textarea type="text" class="form-control" id="allowed-origins" name="allowed-origins" aria-describedby="allowed-origins-help">@string.Join(';', this.Model.Video.AllowedOrigins)</textarea>
+            <div id="allowed-origins-help" class="form-text">Example: https://example.com;https://www.example.com</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
